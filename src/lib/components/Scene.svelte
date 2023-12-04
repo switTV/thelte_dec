@@ -25,7 +25,7 @@
   }}
   fov={50}
 >
-  <OrbitControls enableDamping />
+  <OrbitControls enableDamping/>
 </T.PerspectiveCamera>
 
 <T.DirectionalLight 
