@@ -1,16 +1,21 @@
 <script lang="ts">
-    import { T, useTask } from "@threlte/core"
-    import { interactivity } from '@threlte/extras'
+    import { T, useTask} from "@threlte/core"
+    import { OrbitControls, interactivity, Sky, RoundedBoxGeometry} from '@threlte/extras'
     import { spring } from "svelte/motion";
+    import {DoubleSide, MeshStandardMaterial} from "three"
 
     interactivity()
     const scale = spring(1)
 
     let rotation = 0
+
     useTask((delta) => {
       rotation += delta
+      
     })
 </script>
+
+<Sky elevation={0.5} turbidity={12}/>
 
 <T.PerspectiveCamera
   makeDefault
@@ -18,7 +23,10 @@
   on:create={({ ref }) => {
     ref.lookAt(0, 1, 0)
   }}
-/>
+  fov={50}
+>
+  <OrbitControls enableDamping />
+</T.PerspectiveCamera>
 
 <T.DirectionalLight 
   position={[0, 10, 10]}
@@ -34,14 +42,14 @@
   castShadow
 >
 
-    <T.BoxGeometry args={[1, 2, 1]}/>
-    <T.MeshStandardMaterial color="skyblue"/>
+    <RoundedBoxGeometry />
+    <T.MeshPhongMaterial color="skyblue"/>
 </T.Mesh>
 
 <T.Mesh
   rotation.x={-Math.PI / 2}
   receiveShadow
+  material={new MeshStandardMaterial({side: DoubleSide, color: "white"})}
 >
   <T.CircleGeometry args={[4, 40]}/>
-  <T.MeshStandardMaterial color="white"/>
 </T.Mesh>
