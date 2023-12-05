@@ -2,7 +2,7 @@
     import { T, useTask} from "@threlte/core"
     import { OrbitControls, interactivity, Sky, RoundedBoxGeometry} from '@threlte/extras'
     import { spring } from "svelte/motion";
-    import {DoubleSide, MeshStandardMaterial} from "three"
+    import {DoubleSide, MeshStandardMaterial, SphereGeometry} from "three"
 
     interactivity()
     const scale = spring(1)
@@ -15,7 +15,11 @@
     })
 </script>
 
-<Sky elevation={0.5} turbidity={12}/>
+<svelte:head>
+  <title>3d SvelteKit</title>
+</svelte:head>
+
+<Sky elevation={0.5}/>
 
 <T.PerspectiveCamera
   makeDefault
@@ -35,7 +39,7 @@
 
 <T.Mesh 
   rotation.y={rotation}
-  position.y={1}
+  position.y={1.2}
   scale={$scale}
   on:pointerenter={() => scale.set(1.5)}
   on:pointerleave={() => scale.set(1)}
@@ -46,10 +50,11 @@
     <T.MeshPhongMaterial color="skyblue"/>
 </T.Mesh>
 
+
 <T.Mesh
   rotation.x={-Math.PI / 2}
   receiveShadow
   material={new MeshStandardMaterial({side: DoubleSide, color: "white"})}
 >
-  <T.CircleGeometry args={[4, 40]}/>
+  <T.BoxGeometry args={[40, 40]}/>
 </T.Mesh>
